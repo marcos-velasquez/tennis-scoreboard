@@ -1,13 +1,13 @@
-import { Player } from './models/player';
+/* import { Player } from './models/player';
 import { Match } from './models/match';
 import * as readline from 'readline';
 import { stdin as input, stdout as output } from 'process';
 
-// Base de datos en memoria para almacenar jugadores y partidos
+
 const players: Player[] = [];
 const matches: Match[] = [];
 
-// Interfaz de línea de comandos
+
 const rl = readline.createInterface({ input, output });
 
 // Función para obtener una línea de entrada como Promise
@@ -19,14 +19,14 @@ function questionAsync(prompt: string): Promise<string> {
   });
 }
 
-// Función para procesar comandos
+
 async function processCommand(command: string): Promise<void> {
-  // Separar el comando y los argumentos
+
   const parts = command.trim().split(' ');
   const mainCommand = parts[0];
   const args = parts.slice(1);
 
-  // Procesar los argumentos en formato key:value
+
   const params: Record<string, string> = {};
   for (const arg of args) {
     const [key, value] = arg.split(':');
@@ -71,14 +71,14 @@ async function processCommand(command: string): Promise<void> {
   }
 }
 
-// Implementación de comandos
+
 async function createPlayer(params: Record<string, string>): Promise<void> {
   const { name } = params;
   if (!name) {
     throw new Error('Se requiere el nombre del jugador. Formato: createPlayer name:NombreJugador');
   }
 
-  // Crear un nuevo jugador con ID incremental
+  
   const id = players.length + 1;
   const player = new Player(id, name);
   players.push(player);
@@ -109,13 +109,13 @@ async function createMatch(params: Record<string, string>): Promise<void> {
     throw new Error('El número de sets debe ser 3 o 5');
   }
 
-  // Obtener los IDs de los jugadores
+
   const playerIds = ids.split(',').map((id) => parseInt(id, 10));
   if (playerIds.length !== 2) {
     throw new Error('Se requieren exactamente dos jugadores para un partido.');
   }
 
-  // Buscar los jugadores en la base de datos
+
   const matchPlayers = playerIds.map((id) => {
     const player = players.find((p) => p.getId() === id);
     if (!player) {
@@ -124,7 +124,7 @@ async function createMatch(params: Record<string, string>): Promise<void> {
     return player;
   });
 
-  // Crear el partido
+
   const match = Match.createMatch(numberOfSets, matchPlayers);
   matches.push(match);
 
@@ -134,7 +134,7 @@ async function createMatch(params: Record<string, string>): Promise<void> {
   console.log(match.getScore());
 }
 
-// Función auxiliar para encontrar un partido por ID
+
 function findMatchById(matchIdStr: string): Match {
   const matchId = parseInt(matchIdStr, 10);
   const match = matches.find((m) => m.getId() === matchId);
@@ -145,7 +145,7 @@ function findMatchById(matchIdStr: string): Match {
 }
 
 async function pointService(params: Record<string, string>): Promise<void> {
-  // Extraer el ID del partido del contexto actual
+
   const contextParts = currentContext.split(' ');
   const idPart = contextParts.find((part) => part.startsWith('id:'));
   if (!idPart) {
@@ -158,14 +158,14 @@ async function pointService(params: Record<string, string>): Promise<void> {
   match.pointService();
   console.log(match.getScore());
 
-  // Si el partido ha terminado, mostrar al ganador
+
   if (match.isFinished()) {
     console.log(`¡Partido finalizado! Ganador: ${match.getWinner()?.getName()}`);
   }
 }
 
 async function pointRest(params: Record<string, string>): Promise<void> {
-  // Extraer el ID del partido del contexto actual
+
   const contextParts = currentContext.split(' ');
   const idPart = contextParts.find((part) => part.startsWith('id:'));
   if (!idPart) {
@@ -178,14 +178,14 @@ async function pointRest(params: Record<string, string>): Promise<void> {
   match.pointRest();
   console.log(match.getScore());
 
-  // Si el partido ha terminado, mostrar al ganador
+
   if (match.isFinished()) {
     console.log(`¡Partido finalizado! Ganador: ${match.getWinner()?.getName()}`);
   }
 }
 
 async function lackService(params: Record<string, string>): Promise<void> {
-  // Extraer el ID del partido del contexto actual
+
   const contextParts = currentContext.split(' ');
   const idPart = contextParts.find((part) => part.startsWith('id:'));
   if (!idPart) {
@@ -198,13 +198,13 @@ async function lackService(params: Record<string, string>): Promise<void> {
   match.lackService();
   console.log(match.getScore());
 
-  // Si el partido ha terminado, mostrar al ganador
+  
   if (match.isFinished()) {
     console.log(`¡Partido finalizado! Ganador: ${match.getWinner()?.getName()}`);
   }
 }
 
-// Gestión del contexto
+
 let currentContext = '';
 
 async function main(): Promise<void> {
@@ -222,7 +222,7 @@ async function main(): Promise<void> {
     const prompt = currentContext ? `${currentContext}> ` : '> ';
     const userInput = await questionAsync(prompt);
 
-    // Cambiar el contexto si se selecciona un partido
+   
     if (userInput.startsWith('match')) {
       currentContext = userInput;
       console.log(`Contexto cambiado a: ${currentContext}`);
@@ -232,8 +232,13 @@ async function main(): Promise<void> {
   }
 }
 
-// Iniciar la aplicación
+
 main().catch((error) => {
   console.error(`Error fatal: ${error instanceof Error ? error.message : String(error)}`);
   process.exit(1);
 });
+ */
+
+import { TennisScoreboard } from './tennis-scoreboard';
+
+new TennisScoreboard().start();
