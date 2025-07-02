@@ -1,0 +1,96 @@
+@startuml TennisScoreboard
+
+class TennisScoreboard {
+  -numberOfSets: Integer
+}
+
+class Match {
+  -date: Date
+  +isFinished(): Boolean
+  +getWinner(): Player "0..1"
+}
+
+note right of Match::isFinished
+if a player has won 2 or 3 sets respectively
+end note
+
+class Player {
+  -id: Integer
+  -name: String
+  +getId(): Integer
+  +getName(): String
+}
+
+class ScoreBoard {
+  +displayScore(match: Match): String
+}
+
+class Set {
+  +isFinished(): Boolean
+  +getWinner(): Player
+}
+
+note right of Set::isFinished
+if a player has won 6 games with a margin equal to or greater than 2 ||
+if a player has won 7-5 games ||
+if a player has won 7-6 (a tie break) 
+end note
+
+abstract class Game {
+  +isFinished(): Boolean
+  +getWinner(): Player
+}
+
+class StandardGame extends Game {
+ +isFinished(): Boolean
+}
+
+note right of StandardGame::isFinished
+if a player has won at least 4 points with a difference of 2
+end note
+
+class TieBreakGame extends Game {
+ +isFinished(): Boolean
+}
+
+note right of TieBreakGame::isFinished
+if a player has won at least 6 points with a difference of 2
+end note
+
+class Point {}
+
+enum PointType {
+  0: 0,
+  1: 15,
+  2: 30,
+  3: 40
+  AD
+}
+
+class Service {
+  -player: Player
+  -hasFaulted: Boolean
+  +switchPlayer(): void
+  +registerFault(): Boolean
+  +getCurrentPlayer(): Player
+  +hasFaulted(): Boolean
+}
+
+TennisScoreboard *-- Match
+
+Match *-- "2" Player : contains >
+Match *-- "1..3 || 1..5" Set : contains >
+Match *-- ScoreBoard : muestra >
+Match *-- Service : gestiona >
+
+Set  *-- "1..6 || 1..13" Game : contains >
+Set  --- "1..12" StandardGame
+Set  --- "13..n" TieBreakGame
+
+Game *-- "4..n" Point : contains >
+
+Point *-- PointType 
+
+Service "1" -- "1" Player : asignado a >
+
+@enduml
