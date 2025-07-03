@@ -5,7 +5,7 @@ describe('recursive', () => {
     const mockCallback = jest.fn().mockReturnValue(42);
     const condition = (n: number) => n === 42;
 
-    const result = await recursive(condition)(mockCallback);
+    const result = await recursive<number>(mockCallback).for(condition);
 
     expect(result).toBe(42);
     expect(mockCallback).toHaveBeenCalledTimes(1);
@@ -21,7 +21,7 @@ describe('recursive', () => {
 
     const condition = (n: number) => n >= 4;
 
-    const result = await recursive(condition)(mockCallback);
+    const result = await recursive<number>(mockCallback).for(condition);
 
     expect(result).toBe(4);
     expect(mockCallback).toHaveBeenCalledTimes(4);
@@ -32,7 +32,7 @@ describe('recursive', () => {
 
     const condition = (s: string) => s === 'c';
 
-    const result = await recursive(condition)(mockCallback);
+    const result = await recursive<string>(mockCallback).for(condition);
 
     expect(result).toBe('c');
     expect(mockCallback).toHaveBeenCalledTimes(3);
@@ -47,7 +47,7 @@ describe('recursive', () => {
 
     const condition = (obj: { status: string }) => obj.status === 'success';
 
-    const result = await recursive(condition)(mockCallback);
+    const result = await recursive<{ status: string }>(mockCallback).for(condition);
 
     expect(result).toEqual({ status: 'success' });
     expect(mockCallback).toHaveBeenCalledTimes(3);
@@ -62,7 +62,7 @@ describe('recursive', () => {
 
     const condition = (value: boolean) => value;
 
-    const result = await (async () => recursive(condition)(() => mockAsyncCallback()))();
+    const result = await (async () => recursive<boolean>(mockAsyncCallback).for(condition))();
 
     expect(result).toBe(true);
     expect(mockAsyncCallback).toHaveBeenCalledTimes(3);

@@ -8,6 +8,8 @@ import { ScoreBoard } from './scoreBoard';
  * Clase que representa un partido de tenis.
  */
 export class Match {
+  public static readonly NUMBER_OF_SETS = [3, 5];
+
   private id: number;
   private date: Date;
   private numberOfSets: number;
@@ -18,13 +20,7 @@ export class Match {
   private service: Service;
   private scoreBoard: ScoreBoard;
 
-  /**
-   * Constructor de la clase Match.
-   * @param id Identificador único del partido
-   * @param numberOfSets Número de sets (3 o 5)
-   * @param players Los dos jugadores que participan
-   */
-  constructor(id: number, numberOfSets: number, players: Player[]) {
+  constructor(players: Player[], numberOfSets: number) {
     if (numberOfSets !== 3 && numberOfSets !== 5) {
       throw new Error('Un partido debe tener 3 o 5 sets');
     }

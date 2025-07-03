@@ -1,10 +1,10 @@
-export const recursive = <T>(condition: (value: T) => boolean) => {
-  return async (callback: () => T): Promise<T> => {
+export const recursive = <T>(callback: () => Promise<T>) => ({
+  for: async (condition: (value: T) => boolean): Promise<T> => {
     const value = await callback();
     if (condition(value)) {
       return value;
     } else {
-      return recursive(condition)(callback);
+      return recursive(callback).for(condition);
     }
-  };
-};
+  },
+});
