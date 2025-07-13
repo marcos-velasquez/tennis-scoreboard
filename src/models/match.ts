@@ -58,20 +58,28 @@ export class Match {
   private addPointToPlayer(player: Player): void {
     this.service.resetFault();
     this.getCurrentGame().addPoint(player);
-    if (!this.getCurrentGame().isFinished()) return;
 
+    if (this.getCurrentGame().isFinished()) {
+      this.handleFinishedGame();
+    }
+  }
+
+  private handleFinishedGame(): void {
     this.getCurrentSet().addGame(this.getCurrentGame());
 
     if (this.getCurrentSet().isFinished()) {
-      this.checkMatchFinished();
-
-      if (!this.isFinished()) {
-        this.currentSetIndex++;
-      }
+      this.handleFinishedSet();
     }
 
     if (!this.isFinished()) {
       this.service.switchPlayer();
+    }
+  }
+
+  private handleFinishedSet(): void {
+    this.checkMatchFinished();
+    if (!this.isFinished()) {
+      this.currentSetIndex++;
     }
   }
 

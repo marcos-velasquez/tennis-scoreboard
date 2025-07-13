@@ -2,21 +2,20 @@ import { Command } from './command';
 import { ExitCommand } from './exit.command';
 
 export abstract class Menu<T> {
-  protected readonly commands: Map<number, Command<T>>;
+  protected readonly commands: Command<T>[];
 
   constructor(item: T) {
-    this.commands = new Map<number, Command<T>>();
-    this.fill();
-    this.commands.set(this.commands.size, new ExitCommand<T>());
+    this.commands = this.getCommands();
+    this.commands.push(new ExitCommand<T>());
     this.commands.forEach((command) => command.set(item));
   }
 
-  protected abstract fill(): void;
+  protected abstract getCommands(): Command<T>[];
 
   public async execute(): Promise<void> {
     this.write();
     const option = await this.getOption();
-    this.commands.get(option)!.execute();
+    this.commands[option].execute();
   }
 
   protected abstract write(): void;

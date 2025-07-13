@@ -46,20 +46,19 @@ export class Set {
     const gamesWonPlayer1 = this.getGamesWon(player1);
     const gamesWonPlayer2 = this.getGamesWon(player2);
 
-    const player1Wins =
-      (gamesWonPlayer1 >= Set.GAMES_FOR_WIN && gamesWonPlayer1 >= gamesWonPlayer2 + Set.MIN_GAME_LEAD_FOR_WIN) ||
-      gamesWonPlayer1 === Set.GAMES_FOR_WIN_IN_EXTENDED_SET;
-    const player2Wins =
-      (gamesWonPlayer2 >= Set.GAMES_FOR_WIN && gamesWonPlayer2 >= gamesWonPlayer1 + Set.MIN_GAME_LEAD_FOR_WIN) ||
-      gamesWonPlayer2 === Set.GAMES_FOR_WIN_IN_EXTENDED_SET;
-
-    if (player1Wins) {
+    if (this.hasPlayerWonSet(gamesWonPlayer1, gamesWonPlayer2)) {
       this.finished = true;
       this.winner = player1;
-    } else if (player2Wins) {
+    } else if (this.hasPlayerWonSet(gamesWonPlayer2, gamesWonPlayer1)) {
       this.finished = true;
       this.winner = player2;
     }
+  }
+
+  private hasPlayerWonSet(gamesWon: number, opponentGamesWon: number): boolean {
+    const hasStandardWin = gamesWon >= Set.GAMES_FOR_WIN && gamesWon >= opponentGamesWon + Set.MIN_GAME_LEAD_FOR_WIN;
+    const hasExtendedWin = gamesWon === Set.GAMES_FOR_WIN_IN_EXTENDED_SET;
+    return hasStandardWin || hasExtendedWin;
   }
 
   public getCurrentGame(): Game {

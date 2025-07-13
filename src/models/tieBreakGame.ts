@@ -21,11 +21,15 @@ export class TieBreakGame extends Game {
     this.points.set(player, currentPoints + 1);
     this.totalPointsPlayed++;
 
-    if (this.totalPointsPlayed > 0 && (this.totalPointsPlayed - 1) % TieBreakGame.POINTS_PER_SERVICE_SWITCH === 0) {
+    if (this.shouldSwitchService()) {
       this.changeService();
     }
 
     this.checkGameFinished();
+  }
+
+  private shouldSwitchService(): boolean {
+    return this.totalPointsPlayed > 0 && (this.totalPointsPlayed - 1) % TieBreakGame.POINTS_PER_SERVICE_SWITCH === 0;
   }
 
   public changeService(): void {

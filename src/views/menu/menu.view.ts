@@ -1,4 +1,4 @@
-import { Menu } from '../../common';
+import { Command, Menu } from '../../common';
 import { Match } from '../../models';
 import { input, output } from '../io';
 import { PointServiceCommand } from './point-service.command';
@@ -10,18 +10,17 @@ export class MenuView extends Menu<Match> {
     super(match);
   }
 
-  protected fill(): void {
-    this.commands.set(0, new PointServiceCommand());
-    this.commands.set(1, new PointRestCommand());
-    this.commands.set(2, new LackServiceCommand());
+  protected getCommands(): Command<Match>[] {
+    return [new PointServiceCommand(), new PointRestCommand(), new LackServiceCommand()];
   }
+
   protected write(): void {
-    for (let i = 0; i < this.commands.size; i++) {
-      output.block(i + 1 + '. ' + this.commands.get(i)!.title);
-    }
+    this.commands.forEach((command, index) => {
+      output.block(`${index + 1}. ${command.title}`);
+    });
   }
 
   protected async getOption(): Promise<number> {
-    return (await input.range('Elige una opción: ', { min: 1, max: this.commands.size })) - 1;
+    return (await input.range('Elige una opción: ', { min: 1, max: this.commands.length })) - 1;
   }
 }

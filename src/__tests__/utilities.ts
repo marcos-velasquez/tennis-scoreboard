@@ -125,7 +125,6 @@ export function setScore(game: Game, props: { p1: number; p2: number }): void {
 }
 
 export const player = {
-  index: (match: Match, player: Player): 0 | 1 => match.getPlayers().indexOf(player) as 0 | 1,
   firstPlayer: (match: Match): Player => match.getPlayers()[0],
   secondPlayer: (match: Match): Player => match.getPlayers()[1],
 };

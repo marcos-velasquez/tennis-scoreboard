@@ -1,12 +1,8 @@
-import { SetView, PlayerView, MenuView, MatchView, WinnerView, CleanView } from './views';
-import { Match } from './models';
+import { StartView, MenuView, MatchView, WinnerView, CleanView } from './views';
 
 export class TennisScoreboard {
   public async start(): Promise<void> {
-    const numberOfSets = await new SetView().getAmount();
-    const firstPlayerName = await new PlayerView().getName();
-    const secondPlayerName = await new PlayerView().getName();
-    const match = new Match([firstPlayerName, secondPlayerName], numberOfSets);
+    const match = await new StartView().getMatch();
 
     do {
       new CleanView().write();
