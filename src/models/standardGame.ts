@@ -3,16 +3,16 @@ import { Game } from './game';
 import { Service } from './service';
 
 export class StandardGame extends Game {
-  private points: Map<string, number> = new Map();
+  private points: Map<Player, number> = new Map();
 
   constructor(service: Service) {
     super(service);
-    this.service.getPlayers().forEach((player) => this.points.set(player.name, 0));
+    this.service.getPlayers().forEach((player) => this.points.set(player, 0));
   }
 
   public addPoint(player: Player): void {
-    const currentPoints = this.points.get(player.name) || 0;
-    this.points.set(player.name, currentPoints + 1);
+    const currentPoints = this.points.get(player) || 0;
+    this.points.set(player, currentPoints + 1);
     this.checkGameFinished();
   }
 
@@ -20,8 +20,8 @@ export class StandardGame extends Game {
     const player1 = this.service.getCurrentPlayer();
     const player2 = this.service.getRestPlayer();
 
-    const player1Points = this.points.get(player1.name) || 0;
-    const player2Points = this.points.get(player2.name) || 0;
+    const player1Points = this.points.get(player1) || 0;
+    const player2Points = this.points.get(player2) || 0;
 
     if (player1Points >= 4 && player1Points >= player2Points + 2) {
       this.finished = true;
@@ -33,9 +33,9 @@ export class StandardGame extends Game {
   }
 
   public getScore(player: Player): string {
-    const playerPoints = this.points.get(player.name) || 0;
+    const playerPoints = this.points.get(player) || 0;
     const otherPlayer = this.service.getPlayers().find((p) => !p.equals(player))!;
-    const otherPoints = this.points.get(otherPlayer.name) || 0;
+    const otherPoints = this.points.get(otherPlayer) || 0;
 
     if (playerPoints <= 2) {
       return ['0', '15', '30'][playerPoints];
@@ -56,8 +56,8 @@ export class StandardGame extends Game {
     const player1 = this.service.getCurrentPlayer();
     const player2 = this.service.getRestPlayer();
 
-    const player1Points = this.points.get(player1.name) || 0;
-    const player2Points = this.points.get(player2.name) || 0;
+    const player1Points = this.points.get(player1) || 0;
+    const player2Points = this.points.get(player2) || 0;
 
     return (
       (player1Points >= 3 && player1Points === player2Points + 1) ||
