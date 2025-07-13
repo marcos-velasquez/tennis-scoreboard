@@ -10,8 +10,9 @@ describe('StandardGame', () => {
 
   beforeEach(() => {
     [p1, p2] = Player.many('A', 'B');
-    const service = new Service([p1, p2]);
-    game = new StandardGame(service);
+    const players = [p1, p2];
+    const service = new Service(players);
+    game = new StandardGame(players, service);
   });
 
   it('should score basic points and finish at 40-0, winner p1', () => {

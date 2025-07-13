@@ -6,9 +6,9 @@ export class TieBreakGame extends Game {
   private points: Map<Player, number> = new Map();
   private totalPointsPlayed: number = 0;
 
-  constructor(service: Service) {
-    super(service);
-    this.service.getPlayers().forEach((player) => this.points.set(player, 0));
+  constructor(players: Player[], service: Service) {
+    super(players, service);
+    this.getPlayers().forEach((player) => this.points.set(player, 0));
   }
 
   public addPoint(player: Player): void {
@@ -27,7 +27,7 @@ export class TieBreakGame extends Game {
     this.service.switchPlayer();
   }
   private checkGameFinished(): void {
-    const [player1, player2] = this.service.getPlayers();
+    const [player1, player2] = this.getPlayers();
 
     const player1Points = this.points.get(player1) || 0;
     const player2Points = this.points.get(player2) || 0;

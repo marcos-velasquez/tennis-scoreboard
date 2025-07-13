@@ -5,9 +5,9 @@ import { Service } from './service';
 export class StandardGame extends Game {
   private points: Map<Player, number> = new Map();
 
-  constructor(service: Service) {
-    super(service);
-    this.service.getPlayers().forEach((player) => this.points.set(player, 0));
+  constructor(players: Player[], service: Service) {
+    super(players, service);
+    this.getPlayers().forEach((player) => this.points.set(player, 0));
   }
 
   public addPoint(player: Player): void {
@@ -34,7 +34,7 @@ export class StandardGame extends Game {
 
   public getScore(player: Player): string {
     const playerPoints = this.points.get(player) || 0;
-    const otherPlayer = this.service.getPlayers().find((p) => !p.equals(player))!;
+    const otherPlayer = this.getPlayers().find((p) => !p.equals(player))!;
     const otherPoints = this.points.get(otherPlayer) || 0;
 
     if (playerPoints >= 3 && otherPoints >= 3) {

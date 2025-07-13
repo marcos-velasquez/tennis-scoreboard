@@ -16,7 +16,7 @@ describe('Set', () => {
   });
 
   it('should end 6-0 in favour of p1', () => {
-    const set = new Set(service);
+    const set = new Set([p1, p2], service);
     winGamesInSet(set, { player: p1, games: 6 });
     expect(set.isFinished()).toBe(true);
     expect(set.getWinner()).toBe(p1);
@@ -24,7 +24,7 @@ describe('Set', () => {
   });
 
   it('should start tie-break at 6-6', () => {
-    const set = new Set(service);
+    const set = new Set([p1, p2], service);
     for (let i = 0; i < 6; i++) {
       winGame(set, { player: p1 });
       winGame(set, { player: p2 });
@@ -34,13 +34,13 @@ describe('Set', () => {
   });
 
   it('should NOT finish before 6 games are played', () => {
-    const set = new Set(service);
+    const set = new Set([p1, p2], service);
     winGamesInSet(set, { player: p1, games: 5 });
     expect(set.isFinished()).toBe(false);
   });
 
   it('should finish after a maximum of 13 games (7-6)', () => {
-    const set = new Set(service);
+    const set = new Set([p1, p2], service);
 
     for (let i = 0; i < 6; i++) {
       winGame(set, { player: p1 });

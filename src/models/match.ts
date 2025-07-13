@@ -23,7 +23,9 @@ export class Match {
 
     this.players = Player.many(...playerNames);
     this.service = new Service(this.players);
-    Array.from({ length: numberOfSets }, () => new Set(this.service)).forEach((set) => this.sets.push(set));
+    Array.from({ length: numberOfSets }, () => new Set(this.players, this.service)).forEach((set) =>
+      this.sets.push(set),
+    );
   }
 
   public getCurrentSet(): Set {

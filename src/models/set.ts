@@ -10,7 +10,10 @@ export class Set {
   private winner: Player | null = null;
   private currentGame: Game | null = null;
 
-  constructor(private readonly service: Service) {
+  constructor(
+    private readonly players: Player[],
+    private readonly service: Service,
+  ) {
     this.createNewGame();
   }
 
@@ -19,9 +22,9 @@ export class Set {
     const gamesWonPlayer2 = this.getGamesWon(this.service.getRestPlayer());
 
     if (gamesWonPlayer1 === 6 && gamesWonPlayer2 === 6) {
-      this.currentGame = new TieBreakGame(this.service);
+      this.currentGame = new TieBreakGame(this.players, this.service);
     } else {
-      this.currentGame = new StandardGame(this.service);
+      this.currentGame = new StandardGame(this.players, this.service);
     }
   }
 
@@ -35,8 +38,7 @@ export class Set {
   }
 
   private checkSetFinished(): void {
-    const p1 = this.service.getPlayers()[0];
-    const p2 = this.service.getPlayers()[1];
+    const [p1, p2] = this.players;
     const p1Games = this.getGamesWon(p1);
     const p2Games = this.getGamesWon(p2);
 

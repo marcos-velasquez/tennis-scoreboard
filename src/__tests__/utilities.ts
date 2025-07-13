@@ -119,7 +119,7 @@ export function addPoints(game: Game, props: { player: Player; points: number })
 }
 
 export function setScore(game: Game, props: { p1: number; p2: number }): void {
-  const [player1, player2] = (game as any).service.getPlayers();
+  const [player1, player2] = game.getPlayers();
   (game as any).points.set(player1, props.p1);
   (game as any).points.set(player2, props.p2);
 }

@@ -41,7 +41,5 @@ export class Service {
     this.faultedCount = 0;
   }
 
-  public getPlayers(): Player[] {
-    return this.players;
-  }
+
 }

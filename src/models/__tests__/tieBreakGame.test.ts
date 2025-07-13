@@ -10,8 +10,9 @@ describe('TieBreakGame', () => {
 
   beforeEach(() => {
     [p1, p2] = Player.many('A', 'B');
-    const service = new Service([p1, p2]);
-    game = new TieBreakGame(service);
+    const players = [p1, p2];
+    const service = new Service(players);
+    game = new TieBreakGame(players, service);
   });
 
   it('should reach 6-6', () => {
