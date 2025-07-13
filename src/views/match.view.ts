@@ -23,7 +23,8 @@ export class MatchView {
 
       scoreText += `${prefix} ${player.name}: ${currentGameScore} ${setsScores}\n`;
     }
-
+    output.break();
+    output.break();
     output.block(scoreText);
   }
 }

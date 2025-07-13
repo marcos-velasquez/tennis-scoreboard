@@ -1,4 +1,4 @@
-import { SetView, PlayerView, MenuView, MatchView, WinnerView } from './views';
+import { SetView, PlayerView, MenuView, MatchView, WinnerView, CleanView } from './views';
 import { Match } from './models';
 
 export class TennisScoreboard {
@@ -9,6 +9,7 @@ export class TennisScoreboard {
     const match = new Match([firstPlayerName, secondPlayerName], numberOfSets);
 
     do {
+      new CleanView().write();
       new MatchView(match).write();
       await new MenuView(match).execute();
     } while (!match.isFinished());
