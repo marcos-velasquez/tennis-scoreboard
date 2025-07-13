@@ -49,6 +49,10 @@ export class TieBreakGame extends Game {
     return points.toString();
   }
 
+  public getPoints(player: Player): number {
+    return this.points.get(player) || 0;
+  }
+
   public isGamePoint(): boolean {
     const player1 = this.service.getCurrentPlayer();
     const player2 = this.service.getRestPlayer();
