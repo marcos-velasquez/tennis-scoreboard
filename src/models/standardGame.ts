@@ -37,19 +37,17 @@ export class StandardGame extends Game {
     const otherPlayer = this.service.getPlayers().find((p) => !p.equals(player))!;
     const otherPoints = this.points.get(otherPlayer) || 0;
 
-    if (playerPoints <= 2) {
-      return ['0', '15', '30'][playerPoints];
-    } else if (playerPoints === 3) {
-      return '40';
-    } else {
+    if (playerPoints >= 3 && otherPoints >= 3) {
       if (playerPoints === otherPoints) {
-        return '40';
-      } else if (playerPoints > otherPoints) {
-        return 'AD';
-      } else {
-        return '40';
+        return '40'; // Per project rules, a tie is '40'
       }
+      if (playerPoints > otherPoints) {
+        return 'AD';
+      }
+      return '40';
     }
+
+    return ['0', '15', '30', '40'][playerPoints];
   }
 
   public isGamePoint(): boolean {

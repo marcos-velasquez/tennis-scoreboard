@@ -3,8 +3,8 @@ import { Player } from './player';
 
 export class Service {
   public static readonly MAX_FAULTS = 2;
-  private serverIndex: number;
   private faultedCount: number = 0;
+  private serverIndex: number;
 
   constructor(private readonly players: Player[]) {
     this.serverIndex = Math.floor(Math.random() * players.length);
