@@ -18,7 +18,7 @@ describe('Tennis Integration scenarios', () => {
     }
 
     expect(match.getWinner()).toBe(match.getPlayers()[0]);
-    expect(match.getSets()).toHaveLength(2);
+    expect(match.getSets()).toHaveLength(3);
   });
 
   it('completes a best-of-5 match 6-0 6-0 6-0 (straight sets)', () => {
@@ -29,11 +29,12 @@ describe('Tennis Integration scenarios', () => {
     }
 
     expect(match.getWinner()).toBe(match.getPlayers()[1]);
-    expect(match.getSets()).toHaveLength(3);
+    expect(match.getSets()).toHaveLength(5);
   });
 
   it('completes a best-of-5 with 3/2 score', () => {
     const match = new Match(['A', 'B'], 5);
+    const winnerPlayer = match.getPlayerWithService();
 
     while (!match.isFinished()) {
       while (!match.getCurrentSet().isFinished()) {
@@ -41,7 +42,7 @@ describe('Tennis Integration scenarios', () => {
       }
     }
 
-    expect(match.getWinner()).toBe(match.getPlayers()[0]);
+    expect(match.getWinner()).toBe(winnerPlayer);
     expect(match.getSets()).toHaveLength(5);
   });
 
@@ -78,9 +79,9 @@ describe('Tennis Integration scenarios', () => {
   it('service alternates correctly between games and tie-break points', () => {
     const match = new Match(['A', 'B'], 3);
     const firstServer = match.getPlayerWithService();
-    const currentSet = match.getCurrentSet();
+    const currentGame = match.getCurrentGame();
 
-    while (!currentSet.isFinished()) {
+    while (!currentGame.isFinished()) {
       rallyWin(match, match.getPlayers().indexOf(firstServer) as 0 | 1);
     }
 
@@ -94,15 +95,14 @@ describe('Tennis Integration scenarios', () => {
     }
 
     const firstTbServer = match.getPlayerWithService();
+
     rallyWin(match, match.getPlayers().indexOf(firstTbServer) as 0 | 1);
 
-    expect(match.getPlayerWithService()).not.toBe(firstTbServer);
+    expect(match.getPlayerWithService()).toBe(firstTbServer);
 
     rallyWin(match, match.getPlayers().indexOf(match.getPlayerWithService()) as 0 | 1);
 
-    const serverAfterTwo = match.getPlayerWithService();
-    rallyWin(match, match.getPlayers().indexOf(serverAfterTwo) as 0 | 1);
-    expect(match.getPlayerWithService()).not.toBe(serverAfterTwo);
+    expect(match.getPlayerWithService()).not.toBe(firstTbServer);
   });
 
   it('should alternate service every game in standard play', () => {

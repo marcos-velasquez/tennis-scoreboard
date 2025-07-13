@@ -10,8 +10,6 @@ export abstract class Game {
     this.service = service;
   }
 
-  public abstract addPoint(player: Player): void;
-
   public isFinished(): boolean {
     return this.finished;
   }
@@ -19,6 +17,8 @@ export abstract class Game {
   public getWinner(): Player | null {
     return this.winner;
   }
+
+  public abstract addPoint(player: Player): void;
 
   public abstract getScore(player: Player): string;
 

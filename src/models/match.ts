@@ -10,6 +10,7 @@ export class Match {
   private numberOfSets: number;
   private players: Player[];
   private sets: Set[] = [];
+  private currentSetIndex: number = 0;
   private finished: boolean = false;
   private winner: Player | null = null;
   private service: Service;
@@ -21,11 +22,11 @@ export class Match {
     this.numberOfSets = numberOfSets;
     this.players = Player.many(...playerNames);
     this.service = new Service(this.players);
-    Array.from({ length: numberOfSets - 1 }, () => new Set(this.service)).forEach((set) => this.sets.push(set));
+    Array.from({ length: numberOfSets }, () => new Set(this.service)).forEach((set) => this.sets.push(set));
   }
 
   public getCurrentSet(): Set {
-    return this.sets[this.sets.length - 1];
+    return this.sets[this.currentSetIndex];
   }
 
   public getCurrentGame(): Game {
@@ -33,7 +34,7 @@ export class Match {
   }
 
   public pointService(): void {
-    this.addPointToPlayer(this.service.getCurrentPlayer());
+    this.addPointToPlayer(this.getPlayerWithService());
   }
 
   public pointRest(): void {
@@ -61,9 +62,15 @@ export class Match {
 
       if (currentSet.isFinished()) {
         this.checkMatchFinished();
+
+        if (!this.isFinished()) {
+          this.currentSetIndex++;
+        }
       }
 
-      this.service.switchPlayer();
+      if (!this.isFinished()) {
+        this.service.switchPlayer();
+      }
     }
   }
 
