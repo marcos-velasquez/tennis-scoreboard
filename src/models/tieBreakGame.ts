@@ -4,7 +4,6 @@ import { Service } from './service';
 
 export class TieBreakGame extends Game {
   private points: Map<string, number> = new Map();
-  private nextServiceChange: number = 2;
   private totalPointsPlayed: number = 0;
 
   constructor(service: Service) {
@@ -17,9 +16,8 @@ export class TieBreakGame extends Game {
     this.points.set(player.name, currentPoints + 1);
     this.totalPointsPlayed++;
 
-    if (this.totalPointsPlayed === this.nextServiceChange) {
+    if (this.totalPointsPlayed > 0 && (this.totalPointsPlayed - 1) % 2 === 0) {
       this.changeService();
-      this.nextServiceChange += 2;
     }
 
     this.checkGameFinished();

@@ -15,6 +15,10 @@ export abstract class Game {
     return this.winner;
   }
 
+  public getService(): Service {
+    return this.service;
+  }
+
   public abstract addPoint(player: Player): void;
 
   public abstract getScore(player: Player): string;

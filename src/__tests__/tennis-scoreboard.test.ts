@@ -52,17 +52,20 @@ describe('Tennis Integration scenarios', () => {
     expect(match.getPlayerWithService()).toBe(firstRest);
   });
 
-  it('should alternate service every 2 points in tie-break', () => {
+  it('should alternate service correctly in tie-break (after 1st point, then every 2)', () => {
     const match = new Match(['A', 'B'], 3);
-
     forceTieBreak(match);
 
-    const tieBreakServer = match.getPlayerWithService();
+    const initialServer = match.getPlayerWithService();
+    const initialReceiver = match.getRestPlayer();
 
-    rallyWin(match, { player: tieBreakServer });
-    expect(match.getPlayerWithService()).toBe(tieBreakServer);
+    rallyWin(match, { player: initialServer });
+    expect(match.getPlayerWithService()).toBe(initialReceiver);
 
-    rallyWin(match, { player: tieBreakServer });
-    expect(match.getPlayerWithService()).not.toBe(tieBreakServer);
+    rallyWin(match, { player: initialServer });
+    expect(match.getPlayerWithService()).toBe(initialReceiver);
+
+    rallyWin(match, { player: initialServer });
+    expect(match.getPlayerWithService()).toBe(initialServer);
   });
 });

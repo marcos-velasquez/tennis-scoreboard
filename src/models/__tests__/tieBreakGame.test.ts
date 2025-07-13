@@ -44,4 +44,18 @@ describe('TieBreakGame', () => {
     setScore(game, { p1: p1Pts, p2: p2Pts });
     expect(game.isFinished()).toBe(false);
   });
+
+  it('should change service correctly during the tie-break', () => {
+    const initialServer = game.getService().getCurrentPlayer();
+    const receiver = game.getService().getRestPlayer();
+
+    game.addPoint(initialServer);
+    expect(game.getService().getCurrentPlayer()).toBe(receiver);
+
+    game.addPoint(receiver);
+    expect(game.getService().getCurrentPlayer()).toBe(receiver);
+
+    game.addPoint(receiver);
+    expect(game.getService().getCurrentPlayer()).toBe(initialServer);
+  });
 });
