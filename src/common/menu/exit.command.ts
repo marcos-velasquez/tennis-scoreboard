@@ -2,7 +2,7 @@ import { Command } from './command';
 
 export class ExitCommand<T> extends Command<T> {
   public constructor() {
-    super('Salir');
+    super('Exit');
   }
 
   public execute(): void {

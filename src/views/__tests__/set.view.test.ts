@@ -18,7 +18,7 @@ describe('SetView', () => {
       const result = await setView.getAmount();
 
       expect(result).toBe(3);
-      expect(input.range).toHaveBeenCalledWith('Ingrese el número de sets (3 o 5): ', { min: 3, max: 5 });
+      expect(input.range).toHaveBeenCalledWith('createMatch sets (3 o 5): ', { min: 3, max: 5 });
     });
 
     it('should retry when an invalid number is entered first', async () => {
