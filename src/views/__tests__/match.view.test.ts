@@ -3,6 +3,10 @@ import { MatchView } from '../match.view';
 import { ScoreView } from '../score.view';
 import { WinnerView } from '../winner.view';
 
+jest.mock('../io', () => ({
+  output: { block: jest.fn() },
+}));
+
 jest.mock('../score.view');
 jest.mock('../winner.view');
 
