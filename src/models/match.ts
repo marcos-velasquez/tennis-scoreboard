@@ -6,6 +6,8 @@ import { Service } from './service';
 
 export class Match {
   public static readonly NUMBER_OF_SETS = [3, 5] as const;
+  private static readonly SETS_TO_WIN_BEST_OF_3 = 2;
+  private static readonly SETS_TO_WIN_BEST_OF_5 = 3;
 
   private readonly players: Player[];
   private readonly service: Service;
@@ -77,7 +79,9 @@ export class Match {
     const setsWonPlayer1 = this.sets.filter((set) => set.getWinner() === this.players[0]).length;
     const setsWonPlayer2 = this.sets.filter((set) => set.getWinner() === this.players[1]).length;
 
-    const setsToWin = this.numberOfSets === 3 ? 2 : 3;
+    const setsToWin = this.numberOfSets === Match.NUMBER_OF_SETS[0]
+        ? Match.SETS_TO_WIN_BEST_OF_3
+        : Match.SETS_TO_WIN_BEST_OF_5;
 
     if (setsWonPlayer1 >= setsToWin) {
       this.finished = true;

@@ -3,6 +3,11 @@ import { Game } from './game';
 import { Service } from './service';
 
 export class TieBreakGame extends Game {
+  private static readonly POINTS_FOR_WIN = 6;
+  private static readonly MIN_LEAD_FOR_WIN = 2;
+  private static readonly MATCH_POINT_THRESHOLD = 5;
+  private static readonly POINTS_PER_SERVICE_SWITCH = 2;
+
   private points: Map<Player, number> = new Map();
   private totalPointsPlayed: number = 0;
 
@@ -16,7 +21,10 @@ export class TieBreakGame extends Game {
     this.points.set(player, currentPoints + 1);
     this.totalPointsPlayed++;
 
-    if (this.totalPointsPlayed > 0 && (this.totalPointsPlayed - 1) % 2 === 0) {
+    if (
+      this.totalPointsPlayed > 0 &&
+      (this.totalPointsPlayed - 1) % TieBreakGame.POINTS_PER_SERVICE_SWITCH === 0
+    ) {
       this.changeService();
     }
 
@@ -32,10 +40,16 @@ export class TieBreakGame extends Game {
     const player1Points = this.points.get(player1) || 0;
     const player2Points = this.points.get(player2) || 0;
 
-    if (player1Points >= 6 && player1Points >= player2Points + 2) {
+    if (
+      player1Points >= TieBreakGame.POINTS_FOR_WIN &&
+      player1Points >= player2Points + TieBreakGame.MIN_LEAD_FOR_WIN
+    ) {
       this.finished = true;
       this.winner = player1;
-    } else if (player2Points >= 6 && player2Points >= player1Points + 2) {
+    } else if (
+      player2Points >= TieBreakGame.POINTS_FOR_WIN &&
+      player2Points >= player1Points + TieBreakGame.MIN_LEAD_FOR_WIN
+    ) {
       this.finished = true;
       this.winner = player2;
     }
@@ -58,8 +72,10 @@ export class TieBreakGame extends Game {
     const player2Points = this.points.get(player2) || 0;
 
     return (
-      (player1Points >= 5 && player1Points === player2Points + 1) ||
-      (player2Points >= 5 && player2Points === player1Points + 1)
+      (player1Points >= TieBreakGame.MATCH_POINT_THRESHOLD &&
+        player1Points === player2Points + 1) ||
+      (player2Points >= TieBreakGame.MATCH_POINT_THRESHOLD &&
+        player2Points === player1Points + 1)
     );
   }
 

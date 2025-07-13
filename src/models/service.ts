@@ -40,6 +40,4 @@ export class Service {
   public resetFault(): void {
     this.faultedCount = 0;
   }
-
-
 }

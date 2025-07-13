@@ -5,6 +5,10 @@ import { TieBreakGame } from './tieBreakGame';
 import { Service } from './service';
 
 export class Set {
+  private static readonly GAMES_FOR_WIN = 6;
+  private static readonly MIN_GAME_LEAD_FOR_WIN = 2;
+  private static readonly GAMES_FOR_WIN_IN_EXTENDED_SET = 7;
+
   private readonly games: Game[] = [];
   private finished = false;
   private winner: Player | null = null;
@@ -21,7 +25,7 @@ export class Set {
     const gamesWonPlayer1 = this.getGamesWon(this.service.getCurrentPlayer());
     const gamesWonPlayer2 = this.getGamesWon(this.service.getRestPlayer());
 
-    if (gamesWonPlayer1 === 6 && gamesWonPlayer2 === 6) {
+    if (gamesWonPlayer1 === Set.GAMES_FOR_WIN && gamesWonPlayer2 === Set.GAMES_FOR_WIN) {
       this.currentGame = new TieBreakGame(this.players, this.service);
     } else {
       this.currentGame = new StandardGame(this.players, this.service);
@@ -42,8 +46,12 @@ export class Set {
     const p1Games = this.getGamesWon(p1);
     const p2Games = this.getGamesWon(p2);
 
-    const p1Wins = (p1Games >= 6 && p1Games >= p2Games + 2) || p1Games === 7;
-    const p2Wins = (p2Games >= 6 && p2Games >= p1Games + 2) || p2Games === 7;
+    const p1Wins =
+      (p1Games >= Set.GAMES_FOR_WIN && p1Games >= p2Games + Set.MIN_GAME_LEAD_FOR_WIN) ||
+      p1Games === Set.GAMES_FOR_WIN_IN_EXTENDED_SET;
+    const p2Wins =
+      (p2Games >= Set.GAMES_FOR_WIN && p2Games >= p1Games + Set.MIN_GAME_LEAD_FOR_WIN) ||
+      p2Games === Set.GAMES_FOR_WIN_IN_EXTENDED_SET;
 
     if (p1Wins) {
       this.finished = true;
