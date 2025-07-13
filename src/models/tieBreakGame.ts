@@ -21,10 +21,7 @@ export class TieBreakGame extends Game {
     this.points.set(player, currentPoints + 1);
     this.totalPointsPlayed++;
 
-    if (
-      this.totalPointsPlayed > 0 &&
-      (this.totalPointsPlayed - 1) % TieBreakGame.POINTS_PER_SERVICE_SWITCH === 0
-    ) {
+    if (this.totalPointsPlayed > 0 && (this.totalPointsPlayed - 1) % TieBreakGame.POINTS_PER_SERVICE_SWITCH === 0) {
       this.changeService();
     }
 
@@ -72,14 +69,8 @@ export class TieBreakGame extends Game {
     const player2Points = this.points.get(player2) || 0;
 
     return (
-      (player1Points >= TieBreakGame.MATCH_POINT_THRESHOLD &&
-        player1Points === player2Points + 1) ||
-      (player2Points >= TieBreakGame.MATCH_POINT_THRESHOLD &&
-        player2Points === player1Points + 1)
+      (player1Points >= TieBreakGame.MATCH_POINT_THRESHOLD && player1Points === player2Points + 1) ||
+      (player2Points >= TieBreakGame.MATCH_POINT_THRESHOLD && player2Points === player1Points + 1)
     );
-  }
-
-  public isMatchPoint(): boolean {
-    return this.isGamePoint();
   }
 }

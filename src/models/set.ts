@@ -42,23 +42,23 @@ export class Set {
   }
 
   private checkSetFinished(): void {
-    const [p1, p2] = this.players;
-    const p1Games = this.getGamesWon(p1);
-    const p2Games = this.getGamesWon(p2);
+    const [player1, player2] = this.players;
+    const gamesWonPlayer1 = this.getGamesWon(player1);
+    const gamesWonPlayer2 = this.getGamesWon(player2);
 
-    const p1Wins =
-      (p1Games >= Set.GAMES_FOR_WIN && p1Games >= p2Games + Set.MIN_GAME_LEAD_FOR_WIN) ||
-      p1Games === Set.GAMES_FOR_WIN_IN_EXTENDED_SET;
-    const p2Wins =
-      (p2Games >= Set.GAMES_FOR_WIN && p2Games >= p1Games + Set.MIN_GAME_LEAD_FOR_WIN) ||
-      p2Games === Set.GAMES_FOR_WIN_IN_EXTENDED_SET;
+    const player1Wins =
+      (gamesWonPlayer1 >= Set.GAMES_FOR_WIN && gamesWonPlayer1 >= gamesWonPlayer2 + Set.MIN_GAME_LEAD_FOR_WIN) ||
+      gamesWonPlayer1 === Set.GAMES_FOR_WIN_IN_EXTENDED_SET;
+    const player2Wins =
+      (gamesWonPlayer2 >= Set.GAMES_FOR_WIN && gamesWonPlayer2 >= gamesWonPlayer1 + Set.MIN_GAME_LEAD_FOR_WIN) ||
+      gamesWonPlayer2 === Set.GAMES_FOR_WIN_IN_EXTENDED_SET;
 
-    if (p1Wins) {
+    if (player1Wins) {
       this.finished = true;
-      this.winner = p1;
-    } else if (p2Wins) {
+      this.winner = player1;
+    } else if (player2Wins) {
       this.finished = true;
-      this.winner = p2;
+      this.winner = player2;
     }
   }
 
