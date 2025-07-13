@@ -44,4 +44,23 @@ describe('Set', () => {
 
     expect(set.getCurrentGame().constructor.name).toBe('TieBreakGame');
   });
+
+  it('should NOT finish before 6 games are played', () => {
+    const set = new Set(service);
+    for (let i = 0; i < 5; i++) {
+      set.addGame(finishedGame(p1));
+    }
+    expect(set.isFinished()).toBe(false);
+  });
+
+  it('should finish after a maximum of 13 games (7-6)', () => {
+    const set = new Set(service);
+
+    for (let i = 0; i < 13; i++) {
+      set.addGame(finishedGame(i % 2 === 0 ? p1 : p2));
+    }
+
+    expect(set.isFinished()).toBe(true);
+    expect(set.getWinner()).toBe(p1);
+  });
 });
