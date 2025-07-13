@@ -10,4 +10,8 @@ export class Output {
   public block(message: string): void {
     this.inline(message + '\r\n');
   }
+
+  public break(): void {
+    this.block('');
+  }
 }

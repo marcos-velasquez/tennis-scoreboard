@@ -1,65 +1,47 @@
 import { Player } from './player';
 
-/**
- * Clase que gestiona el servicio en un juego de tenis.
- */
 export class Service {
-  private player: Player;
+  private players: Player[];
+  private take: number;
   private hasFaultedFlag: boolean = false;
 
-  /**
-   * Constructor de la clase Service.
-   * @param player Jugador que tiene actualmente el servicio
-   */
-  constructor(player: Player) {
-    this.player = player;
+  constructor(players: Player[]) {
+    this.take = Math.floor(Math.random() * players.length);
+    this.players = players;
   }
 
-  /**
-   * Cambia el jugador que tiene el servicio.
-   * @param newPlayer Nuevo jugador que tendrá el servicio
-   */
-  public switchPlayer(newPlayer: Player): void {
-    this.player = newPlayer;
-    this.hasFaultedFlag = false; // Resetear la falta cuando cambia el servicio
+  public switchPlayer(): void {
+    this.take = (this.take + 1) % this.players.length;
+    this.resetFault();
   }
 
-  /**
-   * Registra una falta de servicio.
-   * @returns true si es la segunda falta (punto perdido), false si es la primera falta
-   */
   public registerFault(): boolean {
     if (this.hasFaultedFlag) {
-      // Segunda falta, punto perdido
-      this.hasFaultedFlag = false; // Resetear para el próximo punto
+      this.resetFault();
       return true;
     } else {
-      // Primera falta, aún tiene otra oportunidad
       this.hasFaultedFlag = true;
       return false;
     }
   }
 
-  /**
-   * Obtiene el jugador que tiene actualmente el servicio.
-   * @returns El jugador con servicio
-   */
   public getCurrentPlayer(): Player {
-    return this.player;
+    return this.players[this.take];
   }
 
-  /**
-   * Verifica si el jugador con servicio ha cometido una falta.
-   * @returns true si ha cometido una falta, false en caso contrario
-   */
+  public getRestPlayer(): Player {
+    return this.players.find((p) => p !== this.getCurrentPlayer())!;
+  }
+
   public hasFaulted(): boolean {
     return this.hasFaultedFlag;
   }
 
-  /**
-   * Resetea el estado de falta.
-   */
   public resetFault(): void {
     this.hasFaultedFlag = false;
+  }
+
+  public getPlayers(): Player[] {
+    return this.players;
   }
 }
