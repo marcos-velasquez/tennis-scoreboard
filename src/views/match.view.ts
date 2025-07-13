@@ -1,15 +1,29 @@
 import { Match } from '../models';
-import { WinnerView } from './winner.view';
-import { ScoreView } from './score.view';
+import { output } from './io';
 
 export class MatchView {
   constructor(private readonly match: Match) {}
 
   public write(): void {
-    if (this.match.isFinished()) {
-      new WinnerView(this.match).write();
-    } else {
-      new ScoreView(this.match).write();
+    const playerWithService = this.match.getPlayerWithService();
+    const hasFaulted = this.match.hasServiceFaulted();
+
+    let scoreText = '';
+
+    for (let player of this.match.getPlayers()) {
+      const serviceIndicator = playerWithService === player ? '*' : ' ';
+
+      const faultIndicator = playerWithService === player && hasFaulted ? '+' : ' ';
+
+      const prefix = hasFaulted ? faultIndicator : serviceIndicator;
+
+      const currentGameScore = this.match.getCurrentGameScore(player);
+
+      const setsScores = this.match.getScores(player).join(' ');
+
+      scoreText += `${prefix} ${player.name}: ${currentGameScore} ${setsScores}\n`;
     }
+
+    output.block(scoreText);
   }
 }

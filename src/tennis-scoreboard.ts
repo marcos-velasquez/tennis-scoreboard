@@ -1,4 +1,4 @@
-import { SetView, PlayerView, MenuView, MatchView } from './views';
+import { SetView, PlayerView, MenuView, MatchView, WinnerView } from './views';
 import { Match } from './models';
 
 export class TennisScoreboard {
@@ -12,5 +12,7 @@ export class TennisScoreboard {
       new MatchView(match).write();
       await new MenuView(match).execute();
     } while (!match.isFinished());
+
+    new WinnerView(match).write();
   }
 }
