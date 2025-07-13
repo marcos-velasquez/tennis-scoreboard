@@ -3,35 +3,25 @@ import { Player } from './player';
 import { Set } from './set';
 import { Game } from './game';
 import { Service } from './service';
-import { ScoreBoard } from './scoreBoard';
 
 export class Match {
   public static readonly NUMBER_OF_SETS = [3, 5];
 
-  private date: Date;
   private numberOfSets: number;
   private players: Player[];
   private sets: Set[] = [];
   private finished: boolean = false;
   private winner: Player | null = null;
   private service: Service;
-  private scoreBoard: ScoreBoard;
 
   constructor(playerNames: string[], numberOfSets: number) {
     assert(numberOfSets === 3 || numberOfSets === 5, 'Un partido debe tener 3 o 5 sets');
     assert(playerNames.length === 2, 'Un partido debe tener exactamente 2 jugadores');
 
-    this.date = new Date();
     this.numberOfSets = numberOfSets;
     this.players = Player.many(...playerNames);
-    this.scoreBoard = new ScoreBoard();
     this.service = new Service(this.players);
-
-    this.createNewSet();
-  }
-
-  private createNewSet(): void {
-    this.sets.push(new Set(this.service));
+    Array.from({ length: numberOfSets - 1 }, () => new Set(this.service)).forEach((set) => this.sets.push(set));
   }
 
   public getCurrentSet(): Set {
@@ -71,10 +61,6 @@ export class Match {
 
       if (currentSet.isFinished()) {
         this.checkMatchFinished();
-
-        if (!this.finished) {
-          this.createNewSet();
-        }
       }
 
       this.service.switchPlayer();
@@ -120,10 +106,6 @@ export class Match {
     return this.service.hasFaulted();
   }
 
-  public getDate(): Date {
-    return this.date;
-  }
-
   public getPlayers(): Player[] {
     return this.players;
   }
@@ -132,7 +114,7 @@ export class Match {
     return this.sets;
   }
 
-  public getScore(): string {
-    return this.scoreBoard.displayScore(this);
+  public getScores(player: Player): number[] {
+    return this.getSets().map((set) => set.getGamesWon(player));
   }
 }

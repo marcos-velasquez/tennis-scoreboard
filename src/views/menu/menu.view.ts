@@ -1,14 +1,20 @@
-import { Menu } from '../../common/menu/menu';
+import { Menu } from '../../common';
 import { Match } from '../../models';
 import { input, output } from '../io';
+import { PointServiceCommand } from './point-service.command';
+import { PointRestCommand } from './point-rest.command';
+import { LackServiceCommand } from './lack-service';
 
 export class MenuView extends Menu<Match> {
   constructor(match: Match) {
     super(match);
   }
 
-  protected fill(): void {}
-
+  protected fill(): void {
+    this.commands.set(0, new PointServiceCommand());
+    this.commands.set(1, new PointRestCommand());
+    this.commands.set(2, new LackServiceCommand());
+  }
   protected write(): void {
     output.break();
     output.block('---------------------');

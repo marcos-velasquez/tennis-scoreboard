@@ -14,30 +14,12 @@ export abstract class Menu<T> {
   protected abstract fill(): void;
 
   public async execute(): Promise<void> {
-    while (true) {
-      this.write();
-      const option = await this.getOption();
-      this.commands.get(option)!.execute();
-    }
+    this.write();
+    const option = await this.getOption();
+    this.commands.get(option)!.execute();
   }
 
   protected abstract write(): void;
 
   protected abstract getOption(): Promise<number>;
 }
-
-/* 
-public class SaleLineCommand extends Command {
-
-	public SaleLineCommand() {
-		super("Linea de venta");
-	}
-
-	@Override
-	public void execute() {
-		int id = LimitedIntDialog.instance().read("Código", 1000);
-		int units = LimitedIntDialog.instance().read("Unidades", 1000);
-		ticket.add(new SaleLine(id, units));
-	}
-}
- */
