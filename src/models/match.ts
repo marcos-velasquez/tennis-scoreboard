@@ -73,10 +73,11 @@ export class Match {
         this.checkMatchFinished();
 
         if (!this.finished) {
-          this.service.switchPlayer();
           this.createNewSet();
         }
       }
+
+      this.service.switchPlayer();
     }
   }
 

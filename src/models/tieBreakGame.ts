@@ -4,7 +4,7 @@ import { Service } from './service';
 
 export class TieBreakGame extends Game {
   private points: Map<Player, number> = new Map();
-  private nextServiceChange: number = 1;
+  private nextServiceChange: number = 2;
   private totalPointsPlayed: number = 0;
 
   constructor(service: Service) {

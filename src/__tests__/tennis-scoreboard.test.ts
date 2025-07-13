@@ -104,4 +104,36 @@ describe('Tennis Integration scenarios', () => {
     rallyWin(match, match.getPlayers().indexOf(serverAfterTwo) as 0 | 1);
     expect(match.getPlayerWithService()).not.toBe(serverAfterTwo);
   });
+
+  it('should alternate service every game in standard play', () => {
+    const match = new Match(['A', 'B'], 3);
+
+    const firstRest = match.getRestPlayer();
+
+    const currentGame = match.getCurrentGame();
+
+    while (!currentGame.isFinished()) {
+      rallyWin(match, 0);
+    }
+
+    expect(match.getPlayerWithService()).toBe(firstRest);
+  });
+
+  it('should alternate service every point in tie-break', () => {
+    const match = new Match(['A', 'B'], 3);
+
+    const [p1, p2] = match.getPlayers();
+
+    while (match.getSets()[0].getGamesWon(p1) < 6 || match.getSets()[0].getGamesWon(p2) < 6) {
+      const currentP = match.getSets()[0].getGamesWon(p1) === match.getSets()[0].getGamesWon(p2) ? 0 : 1;
+      rallyWin(match, currentP);
+    }
+
+    const tieBreakServer = match.getPlayerWithService();
+    rallyWin(match, match.getPlayers().indexOf(tieBreakServer) as 0 | 1);
+    expect(match.getPlayerWithService()).toBe(tieBreakServer);
+
+    rallyWin(match, match.getPlayers().indexOf(match.getPlayerWithService()) as 0 | 1);
+    expect(match.getPlayerWithService()).not.toBe(tieBreakServer);
+  });
 });
