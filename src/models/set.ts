@@ -5,14 +5,12 @@ import { TieBreakGame } from './tieBreakGame';
 import { Service } from './service';
 
 export class Set {
-  private games: Game[] = [];
-  private finished: boolean = false;
+  private readonly games: Game[] = [];
+  private finished = false;
   private winner: Player | null = null;
-  private service: Service;
   private currentGame: Game | null = null;
 
-  constructor(service: Service) {
-    this.service = service;
+  constructor(private readonly service: Service) {
     this.createNewGame();
   }
 
@@ -37,28 +35,20 @@ export class Set {
   }
 
   private checkSetFinished(): void {
-    const gamesWonPlayer1 = this.getGamesWon(this.service.getCurrentPlayer());
-    const gamesWonPlayer2 = this.getGamesWon(this.service.getRestPlayer());
+    const p1 = this.service.getPlayers()[0];
+    const p2 = this.service.getPlayers()[1];
+    const p1Games = this.getGamesWon(p1);
+    const p2Games = this.getGamesWon(p2);
 
-    // Un set termina si:
-    // 1. Un jugador gana 6 juegos con una diferencia de al menos 2
-    // 2. Un jugador gana 7-5
-    // 3. Un jugador gana 7-6 (con tie break)
+    const p1Wins = (p1Games >= 6 && p1Games >= p2Games + 2) || p1Games === 7;
+    const p2Wins = (p2Games >= 6 && p2Games >= p1Games + 2) || p2Games === 7;
 
-    if (
-      (gamesWonPlayer1 >= 6 && gamesWonPlayer1 >= gamesWonPlayer2 + 2) ||
-      (gamesWonPlayer1 === 7 && gamesWonPlayer2 === 5) ||
-      (gamesWonPlayer1 === 7 && gamesWonPlayer2 === 6)
-    ) {
+    if (p1Wins) {
       this.finished = true;
-      this.winner = this.service.getCurrentPlayer();
-    } else if (
-      (gamesWonPlayer2 >= 6 && gamesWonPlayer2 >= gamesWonPlayer1 + 2) ||
-      (gamesWonPlayer2 === 7 && gamesWonPlayer1 === 5) ||
-      (gamesWonPlayer2 === 7 && gamesWonPlayer1 === 6)
-    ) {
+      this.winner = p1;
+    } else if (p2Wins) {
       this.finished = true;
-      this.winner = this.service.getRestPlayer();
+      this.winner = p2;
     }
   }
 
@@ -75,6 +65,6 @@ export class Set {
   }
 
   public getGamesWon(player: Player): number {
-    return this.games.filter((game) => game.getWinner() === player).length;
+    return this.games.filter((game) => game.getWinner()?.equals(player)).length;
   }
 }

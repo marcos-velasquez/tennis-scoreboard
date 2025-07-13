@@ -29,8 +29,7 @@ export class TieBreakGame extends Game {
     this.service.switchPlayer();
   }
   private checkGameFinished(): void {
-    const player1 = this.service.getCurrentPlayer();
-    const player2 = this.service.getRestPlayer();
+    const [player1, player2] = this.service.getPlayers();
 
     const player1Points = this.points.get(player1.name) || 0;
     const player2Points = this.points.get(player2.name) || 0;

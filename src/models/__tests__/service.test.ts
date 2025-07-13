@@ -24,19 +24,27 @@ describe('Service', () => {
     expect(service.getCurrentPlayer()).not.toBe(first);
   });
 
-  it('should handle service faults', () => {
-    expect(service.hasFaulted()).toBe(false);
-    service.registerFault();
-    expect(service.hasFaulted()).toBe(true);
-    service.registerFault();
-    service.resetFault();
-    expect(service.hasFaulted()).toBe(false);
-  });
+  describe('faults', () => {
+    it('should not have a fault initially', () => {
+      expect(service.hasFaulted()).toBe(false);
+    });
 
-  it('should handle second fault', () => {
-    service.registerFault();
-    expect(service.isSecondFault()).toBe(false);
-    service.registerFault();
-    expect(service.isSecondFault()).toBe(true);
+    it('should have a fault after one is registered', () => {
+      service.registerFault();
+      expect(service.hasFaulted()).toBe(true);
+    });
+
+    it('should report second fault correctly after two faults', () => {
+      service.registerFault();
+      expect(service.isSecondFault()).toBe(false);
+      service.registerFault();
+      expect(service.isSecondFault()).toBe(true);
+    });
+
+    it('should not have a fault after being reset', () => {
+      service.registerFault();
+      service.resetFault();
+      expect(service.hasFaulted()).toBe(false);
+    });
   });
 });

@@ -1,12 +1,30 @@
+import { Game } from '../models/game';
 import { Match } from '../models/match';
 import { Player } from '../models/player';
+import { Set } from '../models/set';
 
 export function rallyWin(match: Match, props: { player: Player }): void {
   const { player } = props;
-  if (match.getPlayerWithService() === player) {
+  if (match.getPlayerWithService().equals(player)) {
     match.pointService();
   } else {
     match.pointRest();
+  }
+}
+
+export function winGame(set: Set, props: { player: Player }): void {
+  const { player } = props;
+  const currentGame = set.getCurrentGame();
+  while (!currentGame.isFinished()) {
+    currentGame.addPoint(player);
+  }
+  set.addGame(currentGame);
+}
+
+export function winGamesInSet(set: Set, props: { player: Player; games: number }): void {
+  const { player, games } = props;
+  for (let i = 0; i < games; i++) {
+    winGame(set, { player });
   }
 }
 
@@ -91,6 +109,19 @@ export function winAnyMatch(match: Match, props: { player: Player }): void {
 export function forceDoubleFault(match: Match): void {
   match.lackService();
   match.lackService();
+}
+
+export function addPoints(game: Game, props: { player: Player; points: number }): void {
+  const { player, points } = props;
+  for (let i = 0; i < points; i++) {
+    game.addPoint(player);
+  }
+}
+
+export function setScore(game: Game, props: { p1: number; p2: number }): void {
+  const [player1, player2] = (game as any).service.getPlayers();
+  (game as any).points.set(player1.name, props.p1);
+  (game as any).points.set(player2.name, props.p2);
 }
 
 export const player = {
