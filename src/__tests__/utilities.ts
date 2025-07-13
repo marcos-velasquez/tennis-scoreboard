@@ -88,6 +88,11 @@ export function winAnyMatch(match: Match, props: { player: Player }): void {
   }
 }
 
+export function forceDoubleFault(match: Match): void {
+  match.lackService();
+  match.lackService();
+}
+
 export const player = {
   index: (match: Match, player: Player): 0 | 1 => match.getPlayers().indexOf(player) as 0 | 1,
   firstPlayer: (match: Match): Player => match.getPlayers()[0],
