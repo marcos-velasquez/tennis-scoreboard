@@ -25,9 +25,7 @@ export class Match {
 
     this.players = Player.many(...playerNames);
     this.service = new Service(this.players);
-    Array.from({ length: numberOfSets }, () => new Set(this.players, this.service)).forEach((set) =>
-      this.sets.push(set),
-    );
+    this.sets = Array.from({ length: numberOfSets }, () => new Set(this.players, this.service));
   }
 
   public getCurrentSet(): Set {
@@ -87,9 +85,8 @@ export class Match {
     const setsWonPlayer1 = this.sets.filter((set) => set.getWinner() === this.players[0]).length;
     const setsWonPlayer2 = this.sets.filter((set) => set.getWinner() === this.players[1]).length;
 
-    const setsToWin = this.numberOfSets === Match.NUMBER_OF_SETS[0]
-        ? Match.SETS_TO_WIN_BEST_OF_3
-        : Match.SETS_TO_WIN_BEST_OF_5;
+    const setsToWin =
+      this.numberOfSets === Match.NUMBER_OF_SETS[0] ? Match.SETS_TO_WIN_BEST_OF_3 : Match.SETS_TO_WIN_BEST_OF_5;
 
     if (setsWonPlayer1 >= setsToWin) {
       this.finished = true;
