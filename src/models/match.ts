@@ -5,21 +5,22 @@ import { Game } from './game';
 import { Service } from './service';
 
 export class Match {
-  public static readonly NUMBER_OF_SETS = [3, 5];
+  public static readonly NUMBER_OF_SETS = [3, 5] as const;
 
-  private numberOfSets: number;
-  private players: Player[];
-  private sets: Set[] = [];
+  private readonly players: Player[];
+  private readonly service: Service;
+  private readonly sets: Set[] = [];
   private currentSetIndex: number = 0;
   private finished: boolean = false;
   private winner: Player | null = null;
-  private service: Service;
 
-  constructor(playerNames: string[], numberOfSets: number) {
-    assert(numberOfSets === 3 || numberOfSets === 5, 'Un partido debe tener 3 o 5 sets');
+  constructor(
+    playerNames: string[],
+    public readonly numberOfSets: (typeof Match.NUMBER_OF_SETS)[number],
+  ) {
+    assert(Match.NUMBER_OF_SETS.includes(numberOfSets), 'Un partido debe tener 3 o 5 sets');
     assert(playerNames.length === 2, 'Un partido debe tener exactamente 2 jugadores');
 
-    this.numberOfSets = numberOfSets;
     this.players = Player.many(...playerNames);
     this.service = new Service(this.players);
     Array.from({ length: numberOfSets }, () => new Set(this.service)).forEach((set) => this.sets.push(set));
@@ -42,19 +43,19 @@ export class Match {
   }
 
   public lackService(): void {
-    const isSecondFault = this.service.registerFault();
+    this.service.registerFault();
 
-    if (isSecondFault) {
+    if (this.service.isSecondFault()) {
       this.pointRest();
       this.service.resetFault();
     }
   }
 
   private addPointToPlayer(player: Player): void {
-    const currentGame = this.getCurrentGame();
-
-    currentGame.addPoint(player);
     this.service.resetFault();
+
+    const currentGame = this.getCurrentGame();
+    currentGame.addPoint(player);
 
     if (currentGame.isFinished()) {
       const currentSet = this.getCurrentSet()!;

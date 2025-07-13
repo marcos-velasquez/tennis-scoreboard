@@ -4,11 +4,8 @@ import { Service } from './service';
 export abstract class Game {
   protected finished: boolean = false;
   protected winner: Player | null = null;
-  protected service: Service;
 
-  constructor(service: Service) {
-    this.service = service;
-  }
+  constructor(protected readonly service: Service) {}
 
   public isFinished(): boolean {
     return this.finished;

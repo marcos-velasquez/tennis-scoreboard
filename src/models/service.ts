@@ -1,9 +1,10 @@
+import assert from 'assert';
 import { Player } from './player';
 
 export class Service {
   private players: Player[];
   private take: number;
-  private hasFaultedFlag: boolean = false;
+  private faultedCount: number = 0;
 
   constructor(players: Player[]) {
     this.take = Math.floor(Math.random() * players.length);
@@ -15,14 +16,13 @@ export class Service {
     this.resetFault();
   }
 
-  public registerFault(): boolean {
-    if (this.hasFaultedFlag) {
-      this.resetFault();
-      return true;
-    } else {
-      this.hasFaultedFlag = true;
-      return false;
-    }
+  public registerFault(): void {
+    assert(this.faultedCount < 2, 'The second fault has already been registered');
+    this.faultedCount++;
+  }
+
+  public isSecondFault(): boolean {
+    return this.faultedCount === 2;
   }
 
   public getCurrentPlayer(): Player {
@@ -34,11 +34,11 @@ export class Service {
   }
 
   public hasFaulted(): boolean {
-    return this.hasFaultedFlag;
+    return this.faultedCount > 0;
   }
 
   public resetFault(): void {
-    this.hasFaultedFlag = false;
+    this.faultedCount = 0;
   }
 
   public getPlayers(): Player[] {

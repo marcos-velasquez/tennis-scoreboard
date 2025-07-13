@@ -26,9 +26,17 @@ describe('Service', () => {
 
   it('should handle service faults', () => {
     expect(service.hasFaulted()).toBe(false);
-    expect(service.registerFault()).toBe(false);
+    service.registerFault();
     expect(service.hasFaulted()).toBe(true);
-    expect(service.registerFault()).toBe(true);
+    service.registerFault();
+    service.resetFault();
     expect(service.hasFaulted()).toBe(false);
+  });
+
+  it('should handle second fault', () => {
+    service.registerFault();
+    expect(service.isSecondFault()).toBe(false);
+    service.registerFault();
+    expect(service.isSecondFault()).toBe(true);
   });
 });
