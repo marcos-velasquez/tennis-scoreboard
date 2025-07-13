@@ -2,9 +2,7 @@ import { Match } from '../../models';
 import { WinnerView } from '../winner.view';
 import { output } from '../io';
 
-jest.mock('../io', () => ({
-  output: { block: jest.fn() },
-}));
+jest.mock('../io', () => ({ output: { block: jest.fn() } }));
 
 describe('WinnerView', () => {
   let match: jest.Mocked<Match>;

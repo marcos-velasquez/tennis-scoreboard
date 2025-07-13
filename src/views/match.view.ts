@@ -5,15 +5,14 @@ export class MatchView {
   constructor(private readonly match: Match) {}
 
   public write(): void {
-    const playerWithService = this.match.getPlayerWithService();
     const hasFaulted = this.match.hasServiceFaulted();
 
     let scoreText = '';
 
     for (let player of this.match.getPlayers()) {
-      const serviceIndicator = playerWithService === player ? '*' : ' ';
+      const serviceIndicator = this.match.getPlayerWithService() === player ? '*' : ' ';
 
-      const faultIndicator = playerWithService === player && hasFaulted ? '+' : ' ';
+      const faultIndicator = serviceIndicator === '*' && hasFaulted ? '+' : ' ';
 
       const prefix = hasFaulted ? faultIndicator : serviceIndicator;
 
@@ -23,6 +22,7 @@ export class MatchView {
 
       scoreText += `${prefix} ${player.name}: ${currentGameScore} ${setsScores}\n`;
     }
+
     output.break();
     output.break();
     output.block(scoreText);

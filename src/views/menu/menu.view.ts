@@ -16,7 +16,6 @@ export class MenuView extends Menu<Match> {
     this.commands.set(2, new LackServiceCommand());
   }
   protected write(): void {
-    output.block('---------------------');
     for (let i = 0; i < this.commands.size; i++) {
       output.block(i + 1 + '. ' + this.commands.get(i)!.title);
     }

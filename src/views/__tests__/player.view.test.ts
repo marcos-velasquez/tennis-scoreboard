@@ -13,11 +13,11 @@ describe('PlayerView', () => {
 
   describe('getName', () => {
     it('should request the player name and return it', async () => {
-      (input.string as jest.Mock).mockResolvedValueOnce('Juan');
+      (input.string as jest.Mock).mockResolvedValueOnce('John Doe');
 
       const result = await playerView.getName();
 
-      expect(result).toBe('Juan');
+      expect(result).toBe('John Doe');
       expect(input.string).toHaveBeenCalledWith('createPlayer name: ');
     });
   });
