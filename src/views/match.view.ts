@@ -5,6 +5,6 @@ export class MatchView {
   constructor(private readonly match: Match) {}
 
   public write(): void {
-    output.block('match view');
+    this.match.getScore();
   }
 }

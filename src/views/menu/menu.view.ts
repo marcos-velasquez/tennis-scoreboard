@@ -18,6 +18,6 @@ export class MenuView extends Menu<Match> {
   }
 
   protected async getOption(): Promise<number> {
-    return (await input.range('Opción', { min: 1, max: this.commands.size })) - 1;
+    return (await input.range('Elige una opción: ', { min: 1, max: this.commands.size })) - 1;
   }
 }

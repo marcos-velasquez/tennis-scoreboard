@@ -7,11 +7,10 @@ export class TennisScoreboard {
     const firstPlayerName = await new PlayerView().getName({ identifier: 1 });
     const secondPlayerName = await new PlayerView().getName({ identifier: 2 });
     const match = new Match([firstPlayerName, secondPlayerName], numberOfSets);
-    const menu = new MenuView(match);
 
     do {
-      menu.execute();
+      await new MenuView(match).execute();
       new MatchView(match).write();
-    } while (!match.isFinished() || !menu.isClosed());
+    } while (!match.isFinished());
   }
 }

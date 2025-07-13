@@ -14,20 +14,16 @@ export abstract class Menu<T> {
   protected abstract fill(): void;
 
   public async execute(): Promise<void> {
-    do {
+    while (true) {
       this.write();
       const option = await this.getOption();
       this.commands.get(option)!.execute();
-    } while (!this.isClosed());
+    }
   }
 
   protected abstract write(): void;
 
   protected abstract getOption(): Promise<number>;
-
-  public isClosed(): boolean {
-    return (this.commands.get(this.commands.size - 1) as ExitCommand<T>).isClosed();
-  }
 }
 
 /* 

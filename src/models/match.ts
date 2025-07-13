@@ -27,11 +27,11 @@ export class Match {
     this.scoreBoard = new ScoreBoard();
     this.service = new Service(this.players);
 
-    this.createNewSet(this.service.getCurrentPlayer());
+    this.createNewSet();
   }
 
-  private createNewSet(initialServerPlayer: Player): void {
-    this.sets.push(new Set(this.players, initialServerPlayer));
+  private createNewSet(): void {
+    this.sets.push(new Set(this.service));
   }
 
   public getCurrentSet(): Set {
@@ -74,7 +74,7 @@ export class Match {
 
         if (!this.finished) {
           this.service.switchPlayer();
-          this.createNewSet(this.service.getCurrentPlayer());
+          this.createNewSet();
         }
       }
     }
