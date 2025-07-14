@@ -10,6 +10,7 @@ export class TennisScoreboard {
       await new MenuView(match).execute();
     } while (!match.isFinished());
 
+    new CleanView().write();
     new WinnerView(match).write();
   }
 }
