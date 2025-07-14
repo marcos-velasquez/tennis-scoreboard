@@ -3,6 +3,7 @@ import { StartView } from '..';
 
 jest.mock('../set.view');
 jest.mock('../player.view');
+jest.mock('../io', () => ({ input: { string: jest.fn() } }));
 
 const mockGetAmount = jest.fn();
 
