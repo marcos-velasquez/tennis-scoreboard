@@ -76,4 +76,12 @@ export class Set {
   public getGamesWon(player: Player): number {
     return this.games.filter((game) => game.getWinner()?.equals(player)).length;
   }
+
+  public static many(numberOfSets: number) {
+    return {
+      create: (players: Player[], service: Service) => {
+        return Array.from({ length: numberOfSets }, () => new Set(players, service));
+      },
+    };
+  }
 }

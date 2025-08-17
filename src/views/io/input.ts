@@ -23,6 +23,7 @@ export class Input {
 
   public range(prompt: string, props: { min?: number; max?: number }): Promise<number> {
     assert(props, 'Props min or max are required');
+
     props = Object.assign({ min: 0, max: Infinity }, props);
     return this.int(prompt).then((value) => {
       if ((props.min && value < props.min) || (props.max && value > props.max)) {

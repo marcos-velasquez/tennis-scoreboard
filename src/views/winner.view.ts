@@ -9,6 +9,7 @@ export class WinnerView {
     output.block('*****************');
 
     let scoreText = '';
+
     for (let player of this.match.getPlayers()) {
       const setsScores = this.match.getScores(player).join(' ');
       scoreText += `  ${player.name}: - ${setsScores}\n`;

@@ -24,8 +24,8 @@ export class Match {
     assert(playerNames.length === 2, 'Un partido debe tener exactamente 2 jugadores');
 
     this.players = Player.many(...playerNames);
-    this.service = new Service(this.players);
-    this.sets = Array.from({ length: numberOfSets }, () => new Set(this.players, this.service));
+    this.service = Service.from(this.players);
+    this.sets = Set.many(numberOfSets).create(this.players, this.service);
   }
 
   public getCurrentSet(): Set {
@@ -76,6 +76,7 @@ export class Match {
 
   private handleFinishedSet(): void {
     this.checkMatchFinished();
+
     if (!this.isFinished()) {
       this.currentSetIndex++;
     }

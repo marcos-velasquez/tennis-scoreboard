@@ -40,4 +40,8 @@ export class Service {
   public resetFault(): void {
     this.faultedCount = 0;
   }
+
+  public static from(players: Player[]): Service {
+    return new Service(players);
+  }
 }

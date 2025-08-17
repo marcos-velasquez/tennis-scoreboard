@@ -35,6 +35,7 @@ export class TieBreakGame extends Game {
   public changeService(): void {
     this.service.switchPlayer();
   }
+
   private checkGameFinished(): void {
     const [player1, player2] = this.getPlayers();
 
